@@ -4,15 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- TODO: Change title -->
-    <title>Website Template</title>
+    <title>Kai's Data Visualizations</title>
 
     <!-- Load Bulma from CDN (consider saving it to repository instead) -->
     <!-- https://bulma.io/ -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    
+    <!-- Custom CSS definitions -->
+    <link rel="stylesheet" href="my_styles.css">
 
     <!-- Load Font Awesome 5 (free) icons -->
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+    <!-- include d3.js v5 -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/d3-array.v2.min.js"></script>
+
+    
+
   </head>
 
   <body>
@@ -22,10 +31,8 @@
   <section class="hero is-primary is-bold">
     <div class="hero-body">
       <div class="container">
-        <!-- TODO: Change title -->
-        <h1 class="title">Website Title</h1>
-        <!-- TODO: Change subtitle -->
-        <h2 class="subtitle">Website Subtitle</h2>
+        <h1 class="title">Kai Middlebrook</h1>
+        <h2 class="subtitle">CS 360 Data Visualizations</h2>
       </div>
     </div>
   </section>
@@ -36,7 +43,6 @@
   <nav class="navbar is-light" role="navigation" aria-label="main navigation">
     <div class="container">
       <div class="navbar-brand">
-        <!-- TODO: Change link to repository homepage if needed -->
         <!-- TODO: Change which navbar-item is-active if needed -->
         <a class="navbar-item is-active" href="index.html">
           <span class="icon"><i class="fas fa-home"></i></span>
@@ -57,35 +63,27 @@
             <span class="icon"><i class="fas fa-table"></i></span>
             <span>Data</span>
           </a>
-
-          <!-- TODO: Modify or remove dropdown -->
+          <!-- Begin Homework Dropdown -->
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
               Visualizations
             </a>
-
             <div class="navbar-dropdown">
-              <a class="navbar-item">
-                <span class="icon"><i class="fas fa-chart-line"></i></span>
-                <span>Line Chart</span>
+              <a class="navbar-item" href="#stackedArea" title="Stacked Area Chart">
+                <span class="icon"><i class="fa fa-chart-area"></i></span>
+                <span>Stacked Area Chart</span>
               </a>
-              <a class="navbar-item">
-                <span class="icon"><i class="fas fa-chart-area"></i></span>
-                <span>Area Chart</span>
+              <a class="navbar-item" href="#stackedBar" title="StackedBar">
+                <span class="icon"><i class="fas fa-chart-bar"></i></span>
+                <span>Stacked Bar Chart 1</span>
               </a>
-
-              <hr class="navbar-divider">
-
-              <a class="navbar-item">
+              <a class="navbar-item" href="#bar" title="Bar">
                 <span class="icon"><i class="fas fa-chart-bar"></i></span>
                 <span>Bar Chart</span>
               </a>
-              <a class="navbar-item">
-                <span class="icon"><i class="fas fa-chart-pie"></i></span>
-                <span>Pie Chart</span>
-              </a>
             </div>
           </div>
+          <!-- End Homework Dropdown -->
         </div>
 
         <!-- Right navbar items -->
@@ -111,22 +109,25 @@
       <!-- Begin page content -->
       <div class="content">
         <h1 class="title">
-          <!-- TODO: Change page title -->
-          Page Title
+          <!-- Page title -->
+          Homework 1
         </h1>
         <p class="subtitle">
-          <!-- TODO: Change page subtitle -->
-          Page Subtitle
+          <!-- Page subtitle -->
+          Visualizing the <a href="https://data.sfgov.org/Transportation/Air-Traffic-Passenger-Statistics/rkru-6vcg">Air Traffic Passenger Statistics</a>
+          dataset from <a href="https://datasf.org/opendata/">DataSF</a>
         </p>
 
-        <p>This would be an excellent place to describe what this page is for, what to find in different sections, describe any motivation or theme behind your visualizations, and so on.</p>
-
-        <p>You should not use this template unless you intend to customize it. Make it your own. Keep in mind this simple template is over 300 lines! You can see other examples of websites using Bulma at their showcase: <a href="https://bulma.io/expo/">bulma.io/expo/</a>.</p>
+        <p> The goal of this assignment was to familiarize myself with basic visualization techniques using two different tools <a href="https://www.tableau.com/">Tableau</a> and <a href="https://d3js.org/">D3</a>.
+          There are three important sections on this page. These sections describe the <a href="#data">data</a>, how the data was <a href="#wrangling">wrangled</a>, and the <a href="#visualizations">visualizations</a>.
+        </p>
 
         <h2 id="data">Data</h2>
 
-        <p>Include some detailed information about the dataset here. You should <a href="#">add a link</a> to the original dataset. You might also want to quote the license:</p>
-
+        <p>I used the <a href="https://data.sfgov.org/Transportation/Air-Traffic-Passenger-Statistics/rkru-6vcg">Air Traffic Passenger Statistics</a> dataset from <a href="https://datasf.org/opendata/">DataSF</a> to practice visualization techniques in Tableau and D3.
+          The dataset contains information about Monthly Passenger Traffic Statistics by Airline at the San Francisco International Airport (SFO). The dataset includes 12 colums, which mostly contain categorical data. There are two numerical columns, activity period which
+          which can be reencoded as a date and passenger count. As of January 2020, the dataset included approximately 21.1k rows.
+        </p>
         <blockquote>
           <p>
             "This data is made available under the Public Domain Dedication and License v1.0 whose full text can be found at: <a href="http://www.opendatacommons.org/licenses/pddl/1.0/">www.opendatacommons.org/licenses/pddl/1.0/</a>"
@@ -134,108 +135,135 @@
           <cite>Put a citation here, possibly link to the dataset license information directly.</cite>
         </blockquote>
 
-        <p>In addition to including a link to the source and license, you should describe the data. You might want a list of some sort to enumerate the different types of columns:</p>
+        <p>The Air Traffic Passenger Statistics dataset contains the following columns:</p>
 
         <ol>
-          <li><strong>Column Name:</strong> Give a description of the column, including its type and possible range of values.</li>
+          <li><strong>Activity Period (numeric):</strong> The year and month at which passenger activity took place. The Activity Period is encoded as a number, but can be reencoded to a date type</li>
 
-          <li><strong>Column Name:</strong> Give a description of the column, including its type and possible range of values.</li>
+          <li><strong>Operating Airline (text):</strong> Airline name for the operator of aircraft with passenger activity.</li>
 
-          <li><strong>Column Name:</strong> Give a description of the column, including its type and possible range of values.</li>
+          <li><strong>Operating Airline IATA Code (text):</strong> The International Air Transport Association (IATA) two-letter designation for the Operating Airline.</li>
 
-          <li><strong>Column Name:</strong> Give a description of the column, including its type and possible range of values.</li>
+          <li><strong>Publisher Airline (text):</strong> Airline name that issues the ticket and books revenue for passenger activity.</li>
+          
+          <li><strong>Publisher Airline IATA Code (text):</strong> The International Air Transport Association (IATA) two-letter designation for the Published Airline.</li>
+
+          <li><strong>GEO Summary (text):</strong> Designates whether the passenger activity in relation to SFO arrived from or departed to a location within the United States (“domestic”), or outside the United States (“international”) without stops. Possible values include: Domestic, International.</li>
+
+          <li><strong>GEO Region (text):</strong> Provides a more detailed breakdown of the GEO Summary field to designate the region in the world where activity in relation to SFO arrived from or departed to without stops. Possible values include: US, Africa, Asia, Australia/Oceania, Canada, Caribbean, Central America, Europe, Mexico, Middle East, South America</li>
+
+          <li><strong>Activity Type Code (text):</strong> A description of the physical action a passenger took in relation to a flight, which includes boarding a flight (“enplanements”), getting off a flight (“deplanements”) and transiting to another location (“in- transit”). Possible values include: Enplaned, Deplaned, Thru/Transit.</li>
+
+          <li><strong>Price Category Code (text):</strong> A categorization of whether a Published Airline is a low-cost carrier or not a low-cost carrier. Possible values include: Low Fare, Other.</li>
+          
+          <li><strong>Terminal (text):</strong> The airport terminal designations at SFO where passenger activity took place. Possible values include: Terminal 1, Terminal 2, Terminal 3, International Terminal.</li>
+
+          <li><strong>Boarding Area (text):</strong> The airport boarding area designations at SFO where passenger activity took place. Possible values include: A, B, C, D, E, F, G.</li>
+
+          <li><strong>Passenger Count (numeric):</strong> The number of monthly passengers associated with the above attribute fields.</li>
         </ol>
+        <p>You can access more information about these columns here: <a href="https://data.sfgov.org/api/views/rkru-6vcg/files/30489964-1207-4ee7-802c-e9069504b8eb?download=true&filename=DataSF%20Data%20Dictionary%20for%20Air%20Traffic%20Passenger%20Statistics.pdf">DataSF Data Dictionary for Air Traffic Passenger Statistics</a>.</p>
 
-        <p>This will of course differ depending on the assignment and data.</p>
-
+        <!-- Page Data Wrangling -->
         <h3 id="wrangling">Wrangling</h3>
 
-        <p>Perhaps you had to do some data wrangling to the original dataset to prepare it for visualization. This would be a great place to discuss some of that wrangling.
-
+        <p>Data was wrangled in Tableau and exported to csv format. Each visualization grouped the data differently. In the <a href="#stackedArea">stacked area plot</a> passenger count was grouped by year and price category code (low fare, other).
+          In the first <a href="#stackedBar">stacked bar plot</a> passenger count was grouped by quarter and terminal (terminal 1-3, international terminal). In the second <a href="#bar">stacked bar plot</a> passenger count was grouped by
+          month and GEO summary and filtered to only include data from 2019. All visualizations encoded activity period as a date. The function I used in Tableau to convert Activity Period from a numeric type to a date type can be found below.
+        </p>
         <pre>
-You can even put code into these pre blocks.
-  It will preserve whitespace.
-    That is helpful for formatted code.
+          DATEPARSE("YYYYMM", STR([Activity Period]))
         </pre>
 
-        <p>You can alternatively embed a Gist if you want. There is an "embed" button on <a href="https://gist.github.com/octocat/6cad326836d38bd3a7ae">the Gist page</a> and results in something like this:</p>
+        <!-- Page Prototypes/Visualizations -->
+        <h2 id="visualizations">Prototypes</h2>
 
-        <script src="https://gist.github.com/octocat/6cad326836d38bd3a7ae.js"></script>
-
-        <h2 id="visualizations">Visualizations</h2>
-
-        <p>Ideally not everything would be on a single page like this example. Instead, you might want to put each section in its own webpage. You would need to carefully replicate the page template (with the header, navbar, and footer) and make the necessary updates. For example, you want the "About" navbar item to be considered active on an "About" web page.</p>
-
-        <p>For now this is just a demo. The buttons below do not go anywhere, but can be easily changed to link to different visualization pages.</p>
+        <p>I protyped three visualization and used two different perspectives to interpert the data. All visualizations were protyped in Tableau. In addition, two visualization were implemented in D3 (<a href="#stackedArea">stacked area chart</a>, <a href="#bar">bar chart</a>).</p>
 
         <p class="buttons">
-          <a class="button is-large is-success" href="#">
-            <span class="icon is-medium">
-              <i class="fas fa-chart-line"></i>
-            </span>
-            <span>Line Chart</span>
-          </a>
-
-          <a class="button is-large is-primary" href="#">
+          <a class="button is-large is-success" href="#stackedArea">
             <span class="icon is-medium">
               <i class="fas fa-chart-area"></i>
             </span>
-            <span>Area Chart</span>
+            <span>Stacked Area Chart</span>
           </a>
 
-          <a class="button is-large is-info" href="#">
+          <a class="button is-large is-primary" href="#stackedBar">
+            <span class="icon is-medium">
+              <i class="fas fa-chart-bar"></i>
+            </span>
+            <span>Stacked Bar Chart 1</span>
+          </a>
+
+          <a class="button is-large is-info" href="#bar">
             <span class="icon is-medium">
               <i class="fas fa-chart-bar"></i>
             </span>
             <span>Bar Chart</span>
           </a>
-
-          <a class="button is-large is-link" href="#">
-            <span class="icon is-medium">
-              <i class="fas fa-chart-pie"></i>
-            </span>
-            <span>Pie Chart</span>
-          </a>
         </p>
 
-        <!-- https://github.com/vega/vega-embed#basic-example -->
-        <p>It is possible to embed some visualizations directly here too. Here is <a href="https://github.com/vega/vega-embed#basic-example">an example</a> using Vega-Lite:</p>
+        
 
-        <script src="https://cdn.jsdelivr.net/npm/vega@5.9.0"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.2"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.2.1"></script>
-
-        <div id="vis"></div>
-
-        <script type="text/javascript">
-        var spec = "https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json";
-        vegaEmbed('#vis', spec).then(function(result) {
-          // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-        }).catch(console.error);
-        </script>
-
-        <h4>Instructions</h4>
-
-        <p>You will likely need to include instructions on how to interpet and use the visualization. In the case above, if you click the three dots <i class="fas fa-ellipsis-h has-text-grey-light	"></i> above it will open a menu where you can either save the visualization to a SVG or PNG, or alternatively open it up in the online Vega Editor.</p>
-
-        <h4>Discussion</h4>
-
-        <p>You may also need other sections, like a discussion section, per-visualization section on data wrangling, and others. Because of the extra content and code visualizations take, it might be worthwhile to break up your pages into one home page and then one page per visualization.</p>
-
+        <!-- Begin Stacked Area Chart -->
+        <h3 id='stackedArea'>Stacked Area Chart</h3>
+        <div class="container">
+          <p>This stacked area chart displayes the yearly volume of passengers by price category. Passenger count is grouped by year so taller lines represent higher passenger count. Price category code was encoded using color and applied to the passenger count, so color area represents the
+            proportion of yearly passengers in a price category code. The data was wrangled in Tableau as described in the <a href="#wrangling">wrangling</a> section. This wrangled data is available here: <a href="https://github.com/usf-cs360-spring2020/homework1-krmiddlebrook/blob/gh-pages/data/yearly_volume_of_passengers_by_price_category.csv">Yearly Volume of Passengers By Price Category</a>
+            The chart suggests SFO is not a major airport for low fare airlines. However, the proportion of yearly passengers who traveled with a low fare airline apprears to increase between 2009 and 2017. 
+          </p>
+          <h4>Tableau</h4>
+          <div class="chart-image-container">
+            <img class="chart" src="assets/Yearly Volume of Passenger By Price Category.png">
+          </div>
+          <br>
+          <h4>D3</h4>
+          <div id="stacked_area"></div>
+        </div>
+        <!-- End Stacked Area Chart -->
+        <br>
+        <!-- Begin Stacked Bar Chart 1 -->
+        <h3>Stacked Bar Chart</h3>
+        <p>This stacked bar chart displayes the quartly volume of passengers by terminal. Passenger count is grouped by quarter so taller bars represent higher passenger count. Terminal was encoded using color and applied to the quartly passenger count, so color area represents the
+          proportion of quartly passengers in a terminal category. The data was wrangled in Tableau as described in the <a href="#wrangling">wrangling</a> section. This wrangled data is available here: <a href="https://github.com/usf-cs360-spring2020/homework1-krmiddlebrook/blob/gh-pages/data/quartly_volume_of_passengers_by_terminal.csv">Quartly Volume of Passengers By Terminal</a>>
+          The chart suggests terminal 3 is the busiest terminal year-round and the international terminal is the second busiest.  
+        </p>
+        <div class="container" id='stackedBar'>
+          <div class="chart-image-container">
+            <img class="chart" src="assets/Quarterly Volume of Passengers By Terminal.png">
+          </div>
+        </div>
+        <!-- End Stacked Bar Chart 1 -->
+        <br>
+        <!-- Begin Bar Chart -->
+        <h3 id='bar'>Horizontal Bar Chart</h3>
+        <p>This horizontal bar chart displays the total average volume of passengers by boarding group. The total average passenger count from the entire dataset is grouped by boarding group, so longer bars represent boarding groups with higher average passenger count.
+          Boarding groups are displayed in ascending order by average passenger count. The data was wrangled in Tableau as described in the <a href="#wrangling">wrangling</a> section. This wrangled data is available here: <a href="https://github.com/usf-cs360-spring2020/homework1-krmiddlebrook/blob/gh-pages/data/volume_of_passangers_by_boarding_area.csv">Average Volume of Passengers By Boarding Group</a>>
+          The chart suggests that average volume across boarding groups can be clustered into pairs of two. For example, we can see that pairs F and D, B and C, and A and G each respectively share similar average passenger volume. We also see that boarding groups F and D have mucher 
+          a much higher average passenger volume than all other groups. 
+        </p>
+        <div class="container">
+          <div class="chart-image-container">
+            <img class="chart" src="assets/Volume of Passengers By Boarding Area.png">
+          </div>
+          <br>
+          <h4>D3</h4>
+          <div id="bar_chart"></div>
+        </div>
+        <!-- End Bar Chart -->
+        
+        <!-- Begin Acknowledgements Section -->
         <span class="heading">Acknowledgements</span>
 
         <p>
-          <a href="#">Link to insiration</a><br/>
+          <a href="https://observablehq.com/@d3/stacked-area-chart-via-d3-group">Stacked Area Chart via d3.group</a><br/>
           <a href="#">Link to StackOverflow snippet</a>
         </p>
-
-        <p class="is-6">
-          <em>Thanks to Person Name for their suggestion to do something with the visualization.</em>
-        </p>
-
+        <!-- Begin Acknowledgements Section -->
+        
+        <!-- Begin Grade Section -->
         <h2 id="grade">Grade</h2>
 
-        <!-- TODO: Remove custom style if no longer needed -->
         <style>
           table.grades tbody tr td:nth-child(1),
           table.grades tbody tr td:nth-child(2) {
@@ -243,7 +271,6 @@ You can even put code into these pre blocks.
           }
         </style>
 
-        <!-- TODO: Change or remove table -->
         <!-- https://bulma.io/documentation/elements/table/ -->
         <table class="table is-hoverable is-bordered grades">
           <thead>
@@ -256,27 +283,23 @@ You can even put code into these pre blocks.
 
           <tbody>
             <tr>
-              <td>D</td>
-              <td><i class="has-text-success fas fa-check-circle"></i></td>
-              <td>Discussion of how this grade level was satisfied. Exactly how this section should look will depend on the assignment in question. There is no requirement for formatting in this way. This is just an example of what a table element might look like for this informaiton.</td>
-            </tr>
-
-            <tr>
               <td>C</td>
               <td><i class="has-text-success fas fa-check-circle"></i></td>
-              <td>Discussion of how this grade level was satisfied.</td>
+              <td>Included 3 Tableau prototype charts with 3 different visualization, 3 different encodings (stacked area, stacked bar, bar), 3 different perspectives (grouped by price category, terminal, and boarding group),
+                encoded color in 2 chart (stacked area, stacked bar), and included title and axis labels and a caption for each chart.
+              </td>
             </tr>
 
             <tr>
               <td>B</td>
-              <td><i class="has-text-warning far fa-check-circle"></i></td>
-              <td>Discussion of how this grade level was satisfied.</td>
+              <td><i class="has-text-success fas fa-check-circle"></i></td>
+              <td>Implemented the Yearly Volume of Passengers by Price Category chart in D3. Used the same data encodings and visualization technique.</td>
             </tr>
 
             <tr>
               <td>A</td>
-              <td><i class="has-text-danger fas fa-times-circle"></i></td>
-              <td>Discussion of how this grade level was not satisfied.</td>
+              <td><i class="has-text-success fas fa-check-circle"></i></td>
+              <td>Added a second d3 visualization</td>
             </tr>
           </tbody>
 
@@ -289,22 +312,23 @@ You can even put code into these pre blocks.
         <article class="media">
           <!-- TODO: Replace with profile photo -->
           <figure class="media-left">
-            <p class="image is-128x128"><img class="is-rounded" src="profile.png"></p>
+            <p class="image is-128x128"><img class="is-rounded" src="assets/kai.jpg"></p>
           </figure>
 
           <div class="media-content">
             <div class="content">
               <!-- TODO: Replace with contact information -->
               <p>
-                <strong>Full Name</strong><br/>
-                CS Major, <a href="https://www.usfca.edu/">University of San Francisco</a><br/>
-                <em>Expected Graduation: 20??</em><br/>
-                <i class="fas fa-envelope"></i> <a href="mailto:username@dons.usfca.edu">username@dons.usfca.edu</a>
+                <strong>Kai Middlebrook</strong><br/>
+                Data Science Major, <a href="https://www.usfca.edu/">University of San Francisco</a><br/>
+                <em>Expected Graduation: 2020</em><br/>
+                <i class="fas fa-envelope"></i> <a href="mailto:krmiddlebrook@dons.usfca.edu">krmiddlebrook@dons.usfca.edu</a>
               </p>
 
-              <!-- TODO: Replace with brief biography -->
               <p>
-                Here is a brief bio about yourself. A good rule of thumb is to include at least one technical tidbit (favorite area or course within computer science), and one fun tidbit (such as loving dogs).
+                I am a data scientist. I enjoy applying data science methods to the music industry. 
+                I have experience in natural language processing (NLP), computer vision, digital audio signal processing,
+                and data engineering. Aside from data science, I enjoy backpacking and traveling.
               </p>
 
               <!-- TODO: Replace or remove tags -->
@@ -313,18 +337,16 @@ You can even put code into these pre blocks.
 
               <div class="tags">
                 <span class="tag">Python</span>
-                <span class="tag">C</span>
+                <span class="tag">R</span>
                 <span class="tag">Java</span>
                 <span class="tag">JavaScript</span>
-                <span class="tag">HTML</span>
-                <span class="tag">CSS</span>
-                <span class="tag">SVG</span>
+                <span class="tag">ML</span>
+                <span class="tag">Data Engineering</span>
               </div>
             </div>
           </div>
         </article>
         <!-- End profile box -->
-
       </div>
       <!-- End page content -->
     </div>
@@ -343,7 +365,7 @@ You can even put code into these pre blocks.
 
       <p>
         <!-- TODO: Change to link to your Github repository -->
-        <a href="https://github.com/usf-cs360-spring2020/template-bulma" class="button is-small" style="padding-left: 1em; padding-right: 1em;">
+        <a href="https://github.com/usf-cs360-spring2020/homework1-krmiddlebrook" class="button is-small" style="padding-left: 1em; padding-right: 1em;">
           <i class="fab fa-github-alt"></i>&nbsp;<strong>Github</strong>
         </a>
 
@@ -378,6 +400,11 @@ You can even put code into these pre blocks.
   });
   </script>
   <!-- End mobile menu responsiveness -->
+
+  <!-- custom charting scripts -->
+  <script src="area_chart.js"></script>
+  <script src="bar_chart.js"></script>
+
   </body>
 
 </html>
