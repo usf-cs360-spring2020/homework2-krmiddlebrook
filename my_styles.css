@@ -1,21 +1,16 @@
-.my_svg {
-    background-color: whitesmoke;
+body {
+    margin: 10px;
+    padding: 5px;
+}
+
+svg {
+    background-color: #F5F5F5;
+}
+.parallel_chart {
+    background-color: #F5F5F5;
     border: 1px solid lightgrey;
 }
 
 #background {
     fill: white;
-}
-
-.chart-image-container {
-    background-color: whitesmoke;
-    border: 1px solid lightgrey;
-    text-align: center;
-    max-width: 809px;
-    max-height: 530px;
-}
-.chart {
-    margin: 15px;
-    width: 734px;
-    height: 500px;
 }

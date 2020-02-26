@@ -196,7 +196,7 @@
           </div>
           <br>
           <h4>D3</h4>
-          <div id="stacked_area"></div>
+          <svg class="parallel_chart"></svg>
         </div>
         <!-- End Stacked Area Chart -->
         
@@ -207,6 +207,8 @@
         <p>
           <a href="https://app.rawgraphs.io/">RawGraphs</a></br>
           <a href="https://www.d3-graph-gallery.com/graph/parallel_basic.html">Parallel Coordinates Chart in D3</a><br/>
+          <a href="https://www.d3-graph-gallery.com/graph/custom_legend.html">D3 Legend</a><br/>
+          
         </p>
         <!-- Begin Acknowledgements Section -->
         
@@ -351,8 +353,11 @@
   <!-- End mobile menu responsiveness -->
 
   <!-- custom charting scripts -->
-  <script src="area_chart.js"></script>
-  <script src="bar_chart.js"></script>
+  <script src="tools.js"></script>
+  <script src="parallel_coords.js"></script>
+  <script type="text/javascript">
+    drawParallelCoord('data/mrc2_parallel.csv');
+  </script>
 
   </body>
 
