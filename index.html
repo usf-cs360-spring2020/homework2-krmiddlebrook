@@ -106,73 +106,239 @@
         </h1>
         <p class="subtitle">
           <!-- Page subtitle -->
-          Visualizing the <a href="https://data.sfgov.org/Transportation/Air-Traffic-Passenger-Statistics/rkru-6vcg">Air Traffic Passenger Statistics</a>
-          dataset from <a href="https://datasf.org/opendata/">DataSF</a>
+          Visualizing the <a href="https://opportunityinsights.org/paper/mobilityreportcards/">Mobility Report Cards: The Role of Colleges in Intergenerational Mobility</a>.
+          dataset from <a href="https://opportunityinsights.org">opportunityinsights.org</a>.
         </p>
 
-        <p> The goal of this assignment was to familiarize myself with basic visualization techniques using two different tools <a href="https://www.tableau.com/">Tableau</a> and <a href="https://d3js.org/">D3</a>.
-          There are three important sections on this page. These sections describe the <a href="#data">data</a>, how the data was <a href="#wrangling">wrangled</a>, and the <a href="#visualizations">visualizations</a>.
+        <p> The goal of this assignment was to implement an advanced visualization in D3 using data from <a href="https://opportunityinsights.org/paper/mobilityreportcards/">Mobility Report Cards: The
+          Role of Colleges in Intergenerational Mobility</a>. There are three important sections on this page. These sections describe the <a href="#data">data</a>, how the data was <a href="#wrangling">wrangled</a>, and the <a href="#visualizations">visualizations</a>.
         </p>
 
         <h2 id="data">Data</h2>
 
-        <p>I used the <a href="https://data.sfgov.org/Transportation/Air-Traffic-Passenger-Statistics/rkru-6vcg">Air Traffic Passenger Statistics</a> dataset from <a href="https://datasf.org/opendata/">DataSF</a> to practice visualization techniques in Tableau and D3.
-          The dataset contains information about Monthly Passenger Traffic Statistics by Airline at the San Francisco International Airport (SFO). The dataset includes 12 colums, which mostly contain categorical data. There are two numerical columns, activity period which
-          which can be reencoded as a date and passenger count. As of January 2020, the dataset included approximately 21.1k rows.
-        </p>
+        <p>Here is the link to “Baseline Cross-Sectional Estimates of Child and Parent Income Distributions by College” dataset used for this assignment: <a href="https://opportunityinsights.org/paper/mobilityreportcards/">Mobility Report Cards: The
+          Role of Colleges in Intergenerational Mobility</a>.
+
         <blockquote>
           <p>
-            "This data is made available under the Public Domain Dedication and License v1.0 whose full text can be found at: <a href="http://www.opendatacommons.org/licenses/pddl/1.0/">www.opendatacommons.org/licenses/pddl/1.0/</a>"
+            This data is available at <a href="https://opportunityinsights.org">opportunityinsights.org</a>
           </p>
-          <cite>Put a citation here, possibly link to the dataset license information directly.</cite>
+          <cite>As part of our research studies, we put out publicly available datasets that can be used by other researchers and practitioners to support their own work. These datasets allow you to analyze social mobility and a variety of other
+            outcomes from life expectancy to patent rates by neighborhood, college, parental income level, and racial background. You can search for datasets by geographic level (e.g., Census tracts), by topic (e.g., education), or by the title of
+            the paper. Need technical assistance with these data? Contact us at <a href="mailto:info@opportunityinsights.org">info@opportunityinsights.org</a></cite>
         </blockquote>
 
-        <p>The Air Traffic Passenger Statistics dataset contains the following columns:</p>
+        <p>The dataset contains information about the baseline estimates of parents and childrens income distributions by college. 
+          Here is the list of columns:
+        </p>
+        <p><em>Visualized columns are hightlighted.</em></p>
+        <table class="table is-hoverable is-bordered grades">
+          <thead>
+            <tr>
+              <th>Variable</th>
+              <th>Description</th>
+            </tr>
+          </thead>
 
-        <ol>
-          <li><strong>Activity Period (numeric):</strong> The year and month at which passenger activity took place. The Activity Period is encoded as a number, but can be reencoded to a date type</li>
-
-          <li><strong>Operating Airline (text):</strong> Airline name for the operator of aircraft with passenger activity.</li>
-
-          <li><strong>Operating Airline IATA Code (text):</strong> The International Air Transport Association (IATA) two-letter designation for the Operating Airline.</li>
-
-          <li><strong>Publisher Airline (text):</strong> Airline name that issues the ticket and books revenue for passenger activity.</li>
-          
-          <li><strong>Publisher Airline IATA Code (text):</strong> The International Air Transport Association (IATA) two-letter designation for the Published Airline.</li>
-
-          <li><strong>GEO Summary (text):</strong> Designates whether the passenger activity in relation to SFO arrived from or departed to a location within the United States (“domestic”), or outside the United States (“international”) without stops. Possible values include: Domestic, International.</li>
-
-          <li><strong>GEO Region (text):</strong> Provides a more detailed breakdown of the GEO Summary field to designate the region in the world where activity in relation to SFO arrived from or departed to without stops. Possible values include: US, Africa, Asia, Australia/Oceania, Canada, Caribbean, Central America, Europe, Mexico, Middle East, South America</li>
-
-          <li><strong>Activity Type Code (text):</strong> A description of the physical action a passenger took in relation to a flight, which includes boarding a flight (“enplanements”), getting off a flight (“deplanements”) and transiting to another location (“in- transit”). Possible values include: Enplaned, Deplaned, Thru/Transit.</li>
-
-          <li><strong>Price Category Code (text):</strong> A categorization of whether a Published Airline is a low-cost carrier or not a low-cost carrier. Possible values include: Low Fare, Other.</li>
-          
-          <li><strong>Terminal (text):</strong> The airport terminal designations at SFO where passenger activity took place. Possible values include: Terminal 1, Terminal 2, Terminal 3, International Terminal.</li>
-
-          <li><strong>Boarding Area (text):</strong> The airport boarding area designations at SFO where passenger activity took place. Possible values include: A, B, C, D, E, F, G.</li>
-
-          <li><strong>Passenger Count (numeric):</strong> The number of monthly passengers associated with the above attribute fields.</li>
-        </ol>
-        <p>You can access more information about these columns here: <a href="https://data.sfgov.org/api/views/rkru-6vcg/files/30489964-1207-4ee7-802c-e9069504b8eb?download=true&filename=DataSF%20Data%20Dictionary%20for%20Air%20Traffic%20Passenger%20Statistics.pdf">DataSF Data Dictionary for Air Traffic Passenger Statistics</a>.</p>
+          <tbody>
+            <tr>
+              <td>super_opeid</td>
+              <td>Institution OPEID / Cluster ID when combining multiple
+                OPEIDs: </br>
+                -99 = late goers (attended college between 23-28) </br>
+                -9 = Never attended college (up to and including
+                year 2013) </br>
+                -1 = attending a college with insufficient data (less
+                than 100 students on average or incomplete data) </br>
+                >0 = specific colleges</td>
+            </tr>
+            <tr>
+              <td>name</td>
+              <td>Name of college (or college group)</td>
+            </tr>
+            <tr class="is-selected">
+              <td>type</td>
+              <td>Type :
+                1 = public </br>
+                2 = private non-profit </br>
+                3 = for-profit</td>
+            </tr>
+            <tr class="is-selected">
+              <td>tier</td>
+              <td>Selectivity and type combination:</br>
+                1 = Ivy Plus</br>
+                2 = Other elite schools (public and private)</br>
+                3 = Highly selective public</br>
+                4 = Highly selective private</br>
+                5 = Selective public</br>
+                6 = Selective private</br>
+                7 = Nonselective 4-year public</br>
+                8 = Nonselective 4-year private not-for-profit</br>
+                9 = Two-year (public and private not-for-profit)</br>
+                10 = Four-year for-profit</br>
+                11 = Two-year for-profit</br>
+                12 = Less than two year schools of any type</br>
+                13 = Attending college with insufficient data</br>
+                14 = Not in college between the ages of 19-22</td>
+            </tr>
+            <tr>
+              <td>tier_name</td>
+              <td>Name of college tier</td>
+            </tr>
+            <tr>
+              <td>iclevel</td>
+              <td>Four-year or two-year college</br>
+                1 = Four-year</br>
+                2 = Two-year</br>
+                3 = Less than Two-year</td>
+            </tr>
+            <tr>
+              <td>region</td>
+              <td>Census region:</br>
+                1 = Northeast</br>
+                2 = Midwest</br>
+                3 = South</br>
+                4 = West</td>
+            </tr>
+            <tr>
+              <td>state</td>
+              <td>State</td>
+            </tr>
+            <tr>
+              <td>cz</td>
+              <td>Commuting zone ID</td>
+            </tr>
+            <tr>
+              <td>czname</td>
+              <td>Commuting zone name</td>
+            </tr>
+            <tr>
+              <td>cfips</td>
+              <td>Combined state and county fips code</td>
+            </tr>
+            <tr>
+              <td>county</td>
+              <td>County</td>
+            </tr>
+            <tr>
+              <td>multi</td>
+              <td>Indicator that equals 1 if multiple colleges (IPEDS Unit IDs) are grouped in this Super OPEID</td>
+            </tr>
+            <tr>
+              <td>count</td>
+              <td>Average number of kids per cohort</td>
+            </tr>
+            <tr class="is-selected">
+              <td>female</td>
+              <td>Fraction female among kids.</td>
+            </tr>
+            <tr>
+              <td>k_married</td>
+              <td>Fraction of kids married in 2014.</td>
+            </tr>
+            <tr>
+              <td>mr_kq5_pq1</td>
+              <td>Mobility rate (joint probability of parents in bottom quintile and child in top quintile of the income distribution)</td>
+            </tr>
+            <tr>
+              <td>mr_ktop1_pq1</td>
+              <td>Upper-tail mobility rate (joint probability of parents in bottom quintile and child in top 1% of the income distribution)</td>
+            </tr>
+            <tr>
+              <td>par_mean</td>
+              <td>Mean parental income</td>
+            </tr>
+            <tr>
+              <td>par_mediancounty</td>
+              <td>Median parent household income (rounded to nearest $100)</td>
+            </tr>
+            <tr class="is-selected">
+              <td>par_rank</td>
+              <td>Mean parental income rank</td>
+            </tr>
+            <tr>
+              <td>par_q[PARQUINT]</td>
+              <td>Fraction of parents in an income quintile [PARQUINT]. 1 is the bottom quintile and 5 is the top.</td>
+            </tr>
+            <tr>
+              <td>par_top[PCTILE]pc</td>
+              <td>Fraction of parents in the top percentile [PCTILE]. For instance, par_toppt1pc refers to parents in the top 0.1% of the income distribution.</td>
+            </tr>
+            <tr class="is-selected">
+              <td>k_rank</td>
+              <td>Mean kid earnings rank</td>
+            </tr>
+            <tr>
+              <td>k_mean</td>
+              <td>Mean kid earnings</td>
+            </tr>
+            <tr>
+              <td>k_median</td>
+              <td>Median child individual earnings in 2014 (rounded to the nearest $100)</td>
+            </tr>
+            <tr>
+              <td>k_median_nozero</td>
+              <td>Median child individual earnings among positive earners in 2014 (rounded to the nearest $100)</td>
+            </tr>
+            <tr>
+              <td>k_0inc</td>
+              <td>Fraction of kids with zero labor earnings</td>
+            </tr>
+            <tr>
+              <td>k_q[KIDQUINT]</td>
+              <td>Fraction of kids in an income quintile [KIDQUINT]. 1 is the bottom quintile and 5 is the top.</td>
+            </tr>
+            <tr>
+              <td>k_top[PCTILE]pc</td>
+              <td>Fraction of kids in the top percentile [PCTILE]. For instance, top1pc refers to children in the top 1% of the income distribution.</td>
+            </tr>
+            <tr>
+              <td>k_rank_cond_parq[PARQUINT]</td>
+              <td>Mean kid earnings rank conditional on parent in quintile [PARQUINT]</td>
+            </tr>
+            <tr>
+              <td>kq[KIDQUINT]_cond_parq[PARQUINT]</td>
+              <td>Probability of kid in quintile [KIDQUINT] conditional on parent in quintile [PARQUINT]</td>
+            </tr>
+            <tr>
+              <td>ktop1pc_cond_parq[PARQUINT]</td>
+              <td>Probability of kid in top 1% conditional on parent in quintile [PARQUINT]</td>
+            </tr>
+            <tr>
+              <td>k_married_cond_parq[PARQUINT]</td>
+              <td>Fraction of kids married conditional on parent in quintile [PARQUINT]</td>
+            </tr>
+            <tr>
+              <td>shareimputed</td>
+              <td>Share of count-weighted data that was imputed using information from the 1983-84 cohorts</td>
+            </tr>
+            <tr>
+              <td>imputed</td>
+              <td>Indicator if any data for that super_opeid was imputed</td>
+            </tr>
+          </tbody>
+        </table>
+        
 
         <!-- Page Data Wrangling -->
         <h3 id="wrangling">Wrangling</h3>
 
-        <p>Data was wrangled in Tableau and exported to csv format. Each visualization grouped the data differently. In the <a href="#stackedArea">stacked area plot</a> passenger count was grouped by year and price category code (low fare, other).
-          In the first <a href="#stackedBar">stacked bar plot</a> passenger count was grouped by quarter and terminal (terminal 1-3, international terminal). In the second <a href="#bar">stacked bar plot</a> passenger count was grouped by
-          month and GEO summary and filtered to only include data from 2019. All visualizations encoded activity period as a date. The function I used in Tableau to convert Activity Period from a numeric type to a date type can be found below.
+        <p>Data was wrangled in python using pandas and exported to csv format.
         </p>
         <pre>
-          DATEPARSE("YYYYMM", STR([Activity Period]))
+          import pandas as pd
+          mrc2 = pd.read_csv('data/mrc_table2.csv']
+          mrc2_sub = mrc2.loc[:, sub_cols].copy()
+          mrc2_sub =  mrc2_sub.dropna()
+          mrc2_sub.to_csv('data/mrc2_parallel.csv', index=False)
         </pre>
+        <p>Here is a link to the full jupyter notebook <a href="https://github.com/usf-cs360-spring2020/homework2-krmiddlebrook/blob/gh-pages/data_wrangling.ipynb">data_wrangling.ipynb</a></p>
 
         <!-- Page Prototypes/Visualizations -->
-        <h2 id="visualizations">Prototypes</h2>
+        <h2 id="visualizations">Visualizations</h2>
 
-        <p>I protyped three visualization and used two different perspectives to interpert the data. All visualizations were protyped in Tableau. In addition, two visualization were implemented in D3 (<a href="#stackedArea">stacked area chart</a>, <a href="#bar">bar chart</a>).</p>
-
-        <p class="buttons">
+        <p>I protyped a parallel coordinates plot using <a href="https://rawgraphs.io/">RAWGraphs</a> and implemented the final version in D3 <a href="https://d3js.org/">D3</a>.         
+          <p class="buttons">
           <a class="button is-large is-success" href="#parallelCoords">
             <span class="icon is-medium">
               <i class="fas fa-chart-area"></i>
@@ -183,13 +349,9 @@
 
         
 
-        <!-- Begin Stacked Area Chart -->
+        <!-- Begin Parallel Coordinates Chart -->
         <h3 id='parallelCoords'>Parallel Coordinates Chart</h3>
         <div class="container">
-          <p>This stacked area chart displayes the yearly volume of passengers by price category. Passenger count is grouped by year so taller lines represent higher passenger count. Price category code was encoded using color and applied to the passenger count, so color area represents the
-            proportion of yearly passengers in a price category code. The data was wrangled in Tableau as described in the <a href="#wrangling">wrangling</a> section. This wrangled data is available here: <a href="https://github.com/usf-cs360-spring2020/homework1-krmiddlebrook/blob/gh-pages/data/yearly_volume_of_passengers_by_price_category.csv">Yearly Volume of Passengers By Price Category</a>
-            The chart suggests SFO is not a major airport for low fare airlines. However, the proportion of yearly passengers who traveled with a low fare airline apprears to increase between 2009 and 2017. 
-          </p>
           <h4>RAWGraphs</h4>
           <div class="chart-image-container">
             <img class="chart" src="assets/rawgraphs_parallel.svg">
@@ -197,8 +359,13 @@
           <br>
           <h4>D3</h4>
           <svg class="parallel_chart"></svg>
+          <p>This parallel coordinates chart displayes parental income rank, school tier (indicates school selectivity and type combination), the proportion of females at each tier, and the mean child earning rank encoded by school type. The chart is useful to see how parental income rank impacts the school tier, the proportion of females at each tier, and the mean child earning rank.
+             From the chart, we can see that children who have parents with an income rank in the top 50 percent are most likely to attend the top private and public universities. We also see that the majority of children with parents with income rank in the bottom 50 percent attend the 
+             majority of non-selective for-profit schools. This could indicate that non-profit highly selective schools descriminate agaisnt children from families with lower income. We also see that the majority of universities with high a high proportion of females tend to be non-selective for-profit schools. 
+             Finally we can see that children who attended a university that had a student body with 50 perecent or more females tend to earn less with the exception of students who attend the most selective private and public schools.            
+          </p>
         </div>
-        <!-- End Stacked Area Chart -->
+        <!-- End Parallel Coordinates Chart -->
         
         
         <!-- Begin Acknowledgements Section -->
@@ -234,26 +401,11 @@
 
           <tbody>
             <tr>
-              <td>C</td>
-              <td><i class="has-text-success fas fa-check-circle"></i></td>
-              <td>Included 3 Tableau prototype charts with 3 different visualization, 3 different encodings (stacked area, stacked bar, bar), 3 different perspectives (grouped by price category, terminal, and boarding group),
-                encoded color in 2 chart (stacked area, stacked bar), and included title and axis labels and a caption for each chart.
-              </td>
-            </tr>
-
-            <tr>
-              <td>B</td>
-              <td><i class="has-text-success fas fa-check-circle"></i></td>
-              <td>Implemented the Yearly Volume of Passengers by Price Category chart in D3. Used the same data encodings and visualization technique.</td>
-            </tr>
-
-            <tr>
               <td>A</td>
               <td><i class="has-text-success fas fa-check-circle"></i></td>
-              <td>Added a second d3 visualization</td>
+              <td>Implemented parallel coordinates visualization prototype and in D3.</td>
             </tr>
           </tbody>
-
         </table>
 
         <h2 id="about">About</h2>
@@ -289,7 +441,6 @@
               <div class="tags">
                 <span class="tag">Python</span>
                 <span class="tag">R</span>
-                <span class="tag">Java</span>
                 <span class="tag">JavaScript</span>
                 <span class="tag">ML</span>
                 <span class="tag">Data Engineering</span>
